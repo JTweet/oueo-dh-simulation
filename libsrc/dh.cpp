@@ -1,6 +1,7 @@
 #include <dh/dh.hpp>
 
 DiffieHellman::DiffieHellman(unsigned long int generator, const char *prime) {
+    // MPZ integers require initialization
     mpz_init_set_str(DiffieHellman::prime, prime, 16);
     mpz_init_set_ui(DiffieHellman::generator, generator);
     mpz_init(DiffieHellman::privateKey);
@@ -8,11 +9,15 @@ DiffieHellman::DiffieHellman(unsigned long int generator, const char *prime) {
     mpz_init(DiffieHellman::publicKey);
     mpz_init(DiffieHellman::partnerPublicKey);
 
-    int randomnessBytes = DiffieHellman::getPrimeBitLength() / 8; // The prime length is returned as bits, randombytes_buf excepts full bytes
-    char *randomBuffer = (char *)malloc(randomnessBytes * sizeof(char)); // randombytes_buf output is not null-terminated, no need to adjust for this
-    randombytes_buf(randomBuffer, randomnessBytes); // Fill buffer with random values
+    // The prime length is returned as bits, randombytes_buf excepts full bytes
+    int randomnessBytes = DiffieHellman::getPrimeBitLength() / 8;
+    // randombytes_buf output is not null-terminated, no need to adjust for this
+    char *randomBuffer = (char *)malloc(randomnessBytes * sizeof(char));
+    // Fill buffer with random values
+    randombytes_buf(randomBuffer, randomnessBytes);
     mpz_import(DiffieHellman::privateKey, randomnessBytes, 1, 1, 0, 0, randomBuffer);
-    free(randomBuffer); // Release allocated memory
+    // Release allocated memory
+    free(randomBuffer);
 
     // Calculate the public key
     mpz_powm(DiffieHellman::publicKey, DiffieHellman::generator, DiffieHellman::privateKey, DiffieHellman::prime);
@@ -51,6 +56,7 @@ void DiffieHellman::getSharedSecret(char* outputBuffer) {
     mpz_get_str(outputBuffer, 16, DiffieHellman::sharedSecret);
 }
 
+// Allow importing the partners public key. This function also triggers the calculation of the shared secret
 void DiffieHellman::importPartnerPublicKey(const char *publicKey) {
     mpz_set_str(DiffieHellman::partnerPublicKey, publicKey, 16);
     mpz_powm(DiffieHellman::sharedSecret, DiffieHellman::partnerPublicKey, DiffieHellman::privateKey, DiffieHellman::prime);
