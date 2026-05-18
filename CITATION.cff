@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+authors:
+  - family-names: Springer
+    given-names: Oliver
+    orcid: https://orcid.org/0009-0001-6968-6640
+title: "Diffie-Hellman Sample and Benchmark"
+version: 1.0.0
+date-released: 2026-05-18
