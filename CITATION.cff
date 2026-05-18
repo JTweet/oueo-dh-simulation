@@ -1,8 +1,10 @@
 cff-version: 1.2.0
+title: Diffie-Hellman Sample and Benchmark
+type: software
 authors:
   - family-names: Springer
     given-names: Oliver
-    orcid: https://orcid.org/0009-0001-6968-6640
-title: "Diffie-Hellman Sample and Benchmark"
+    orcid: 'https://orcid.org/0009-0001-6968-6640'
+repository-code: 'https://github.com/JTweet/oueo-dh-simulation'
 version: 1.0.0
-date-released: 2026-05-18
+date-released: '2026-05-18'
